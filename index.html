@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--Reference: https://developers.google.com/maps/documentation/javascript/examples/drawing-tools -->
+
 <html>
   <head>
     <title>Drawing tools</title>
@@ -21,17 +21,17 @@
   </head>
   <body>
     <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgZ1yqO2TdcEd3ustOaP-rCBfmNBdAZlw&libraries=drawing,visualization&callback=initMap"
+     async defer></script>
+    
     <script>
-      // This example requires the Drawing library. Include the libraries=drawing
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=drawing">
 
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
+          center: {lat: 40.740914, lng: -74.0043697}, 
+          zoom: 15
         });
-
+        // [Chris] Plot drawing layer: https://developers.google.com/maps/documentation/javascript/examples/drawing-tools
         var drawingManager = new google.maps.drawing.DrawingManager({
           drawingMode: google.maps.drawing.OverlayType.MARKER,
           drawingControl: true,
@@ -50,9 +50,28 @@
           }
         });
         drawingManager.setMap(map);
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgZ1yqO2TdcEd3ustOaP-rCBfmNBdAZlw&libraries=drawing&callback=initMap"
-         async defer></script>
+
+        // [Chris] Plot visualization (heatmap) layer: https://developers.google.com/maps/documentation/javascript/heatmaplayer#load_the_visualization_library
+        var heatmapData = [
+          new google.maps.LatLng(40.741, -74.005),
+          new google.maps.LatLng(40.741, -74.006),
+          new google.maps.LatLng(40.741, -74.007),
+          new google.maps.LatLng(40.743, -74.005),
+          new google.maps.LatLng(40.743, -74.006),
+          new google.maps.LatLng(40.743, -74.007)
+        ];
+
+
+        var heatmap = new google.maps.visualization.HeatmapLayer({
+          data: heatmapData
+        });
+        heatmap.setMap(map);
+      }    
+ 
+      </script>
+
+
   </body>
 </html>
+
+
