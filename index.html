@@ -66,8 +66,26 @@
           data: heatmapData
         });
         heatmap.setMap(map);
-      }    
- 
+
+        //[Chris] Info window: https://developers.google.com/maps/documentation/javascript/infowindows
+        var contentString = 'This is a Info window';
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        var marker = new google.maps.Marker({
+          position: {lat: 40.741, lng: -74.005},
+          map: map,
+          title: 'Chelsea '
+        });
+        
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      }
+
+     
       </script>
 
 
