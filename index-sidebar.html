@@ -44,11 +44,11 @@
             </div>
 
             <div class="section">
-                <a class="waves-effect waves-light btn-large" id="action1">Toggle Control</a>
+                <a class="waves-effect waves-light btn-large" id="btn-source">Source</a>
             </div>
             <div class="divider"></div>
             <div class="section">
-                <a class="waves-effect waves-light btn-large" id="action2">Action 2</a>
+                <a class="waves-effect waves-light btn-large" id="btn-evacuation">Evacuation</a>
             </div>
 
         </div>
@@ -72,41 +72,64 @@
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 40.740914, lng: -74.0043697},
-                zoom: 15
+                zoom: 15,
+                disableDefaultUI: true,
             });
             // [Chris] Plot drawing layer: https://developers.google.com/maps/documentation/javascript/examples/drawing-tools
             var drawingManager = new google.maps.drawing.DrawingManager({
-                drawingMode: google.maps.drawing.OverlayType.MARKER,
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
-                },
-                markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
+                drawingMode: google.maps.drawing.OverlayType.CIRCLE,
+                drawingControl: false,
+
                 circleOptions: {
                     fillColor: '#ffff00',
-                    fillOpacity: 1,
-                    strokeWeight: 5,
+                    fillOpacity: 0.3,
+                    strokeWeight: 1,
                     clickable: false,
-                    editable: true,
+                    editable: false,
                     zIndex: 1
                 }
             });
-            drawingManager.setMap(map);
 
-            google.maps.event.addDomListener(document.getElementById('action1'), 'click', toggleDrawingManager);
+            google.maps.event.addListener(drawingManager, 'circlecomplete', function( circle ) {
+               drawingManager.setMap(null);
+            });
 
-            function toggleDrawingManager() {
-                if (drawingManager.drawingControl == true) {
+            google.maps.event.addDomListener(document.getElementById('btn-source'), 'click', drawSource);
+            function drawSource() {
+                if (drawingManager.map == null) {
+                    drawingManager.setMap(map);
                     drawingManager.setOptions({
-                        drawingControl: false
+                        circleOptions: {
+                            fillColor: '#ff0000',
+                            fillOpacity: 0.3,
+                            strokeWeight: 1,
+                            clickable: false,
+                            editable: false,
+                            zIndex: 1
+                        }
                     });
                 } else {
-                    drawingManager.setOptions({
-                        drawingControl: true
-                    });
+                    drawingManager.setMap(null);
                 }
+            }
 
+            google.maps.event.addDomListener(document.getElementById('btn-evacuation'), 'click', drawEvacuation);
+            function drawEvacuation() {
+                if (drawingManager.map == null) {
+                    drawingManager.setMap(map);
+                    drawingManager.setOptions({
+                        circleOptions: {
+                            fillColor: '#ffe600',
+                            fillOpacity: 0.3,
+                            strokeWeight: 1,
+                            clickable: false,
+                            editable: false,
+                            zIndex: 1
+                        }
+                    });
+                } else {
+                    drawingManager.setMap(null);
+                }
             }
 
             // [Chris] Plot visualization (heatmap) layer: https://developers.google.com/maps/documentation/javascript/heatmaplayer#load_the_visualization_library
