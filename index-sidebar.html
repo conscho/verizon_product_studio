@@ -20,6 +20,9 @@
           z-index: 99;
           background: rgba(255, 255, 255, 0.7);
       }
+      a {
+          width: 100%
+      }
       /* Optional: Makes the sample page fill the window. */
       html, body {
         height: 100%;
@@ -34,12 +37,20 @@
     <div id="map"></div>
     <div id="over_map" class="card-panel">
         <div class="section">
+            <div class="input-field">
+                <input id="incident" type="text" class="validate">
+            <label for="incident">Incident Type</label>
+            </div>
+        </div>
+        
+        <div class="section">
             <a class="waves-effect waves-light btn-large">Action 1</a>
         </div>
         <div class="divider"></div>
         <div class="section">
             <a class="waves-effect waves-light btn-large">Action 2</a>
         </div>
+
     </div>
 
     <!-- Compiled and minified CSS -->
