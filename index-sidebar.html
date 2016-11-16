@@ -1,134 +1,144 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
+<head>
     <title>Drawing tools</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
+    /* Always set the map height explicitly to define the size of the div
+    * element that contains the map. */
+    #map {
         height: 100%;
-      }
-      #wrapper { position: relative; height: 100%;}
-      #over_map {
-          position: absolute;
-          top: 10px;
-          bottom: 10px;
-          right: 10px;
-          z-index: 99;
-          background: rgba(255, 255, 255, 0.7);
-      }
-      a {
-          width: 100%
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
+    }
+    #wrapper { position: relative; height: 100%;}
+    #over_map {
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        right: 10px;
+        z-index: 99;
+        background: rgba(255, 255, 255, 0.7);
+    }
+    a {
+        width: 100%
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-      }
+    }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div id="wrapper">
 
-    <div id="map"></div>
-    <div id="over_map" class="card-panel">
-        <div class="section">
-            <div class="input-field">
-                <input id="incident" type="text" class="validate">
-            <label for="incident">Incident Type</label>
+        <div id="map"></div>
+        <div id="over_map" class="card-panel">
+            <div class="section">
+                <div class="input-field">
+                    <input id="incident" type="text" class="validate">
+                    <label for="incident">Incident Type</label>
+                </div>
             </div>
+
+            <div class="section">
+                <a class="waves-effect waves-light btn-large" id="action1">Action 1</a>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <a class="waves-effect waves-light btn-large" id="action2">Action 2</a>
+            </div>
+
         </div>
-        
-        <div class="section">
-            <a class="waves-effect waves-light btn-large">Action 1</a>
-        </div>
-        <div class="divider"></div>
-        <div class="section">
-            <a class="waves-effect waves-light btn-large">Action 2</a>
-        </div>
 
-    </div>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
 
-    <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+        <!-- Compiled and minified JavaScript -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
-  <!-- Compiled and minified JavaScript -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgZ1yqO2TdcEd3ustOaP-rCBfmNBdAZlw&libraries=drawing,visualization&callback=initMap"
-     async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgZ1yqO2TdcEd3ustOaP-rCBfmNBdAZlw&libraries=drawing,visualization&callback=initMap"
+        async defer></script>
 
-    <script>
-
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 40.740914, lng: -74.0043697},
-          zoom: 15
-        });
-        // [Chris] Plot drawing layer: https://developers.google.com/maps/documentation/javascript/examples/drawing-tools
-        var drawingManager = new google.maps.drawing.DrawingManager({
-          drawingMode: google.maps.drawing.OverlayType.MARKER,
-          drawingControl: true,
-          drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
-          },
-          markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
-          circleOptions: {
-            fillColor: '#ffff00',
-            fillOpacity: 1,
-            strokeWeight: 5,
-            clickable: false,
-            editable: true,
-            zIndex: 1
-          }
-        });
-        drawingManager.setMap(map);
-
-        // [Chris] Plot visualization (heatmap) layer: https://developers.google.com/maps/documentation/javascript/heatmaplayer#load_the_visualization_library
-        var heatmapData = [
-          new google.maps.LatLng(40.741, -74.005),
-          new google.maps.LatLng(40.741, -74.006),
-          new google.maps.LatLng(40.741, -74.007),
-          new google.maps.LatLng(40.743, -74.005),
-          new google.maps.LatLng(40.743, -74.006),
-          new google.maps.LatLng(40.743, -74.007)
-        ];
+        <script>
+        var drawingManager;
 
 
-        var heatmap = new google.maps.visualization.HeatmapLayer({
-          data: heatmapData
-        });
-        heatmap.setMap(map);
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 40.740914, lng: -74.0043697},
+                zoom: 15
+            });
+            // [Chris] Plot drawing layer: https://developers.google.com/maps/documentation/javascript/examples/drawing-tools
+            var drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.MARKER,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
+                },
+                markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
+                circleOptions: {
+                    fillColor: '#ffff00',
+                    fillOpacity: 1,
+                    strokeWeight: 5,
+                    clickable: false,
+                    editable: true,
+                    zIndex: 1
+                }
+            });
+            drawingManager.setMap(map);
 
-        //[Chris] Info window: https://developers.google.com/maps/documentation/javascript/infowindows
-        var contentString = 'This is a Info window';
+            google.maps.event.addDomListener(document.getElementById('action1'), 'click', hideDrawingManager);
 
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
+            function hideDrawingManager() {
+                drawingManager.setOptions({
+                    drawingControl: false
+                });
+            }
 
-        var marker = new google.maps.Marker({
-          position: {lat: 40.741, lng: -74.005},
-          map: map,
-          title: 'Chelsea '
-        });
-
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
-      }
-
-
-      </script>
+            // [Chris] Plot visualization (heatmap) layer: https://developers.google.com/maps/documentation/javascript/heatmaplayer#load_the_visualization_library
+            var heatmapData = [
+                new google.maps.LatLng(40.741, -74.005),
+                new google.maps.LatLng(40.741, -74.006),
+                new google.maps.LatLng(40.741, -74.007),
+                new google.maps.LatLng(40.743, -74.005),
+                new google.maps.LatLng(40.743, -74.006),
+                new google.maps.LatLng(40.743, -74.007)
+            ];
 
 
-  </body>
-</html>
+            var heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData
+            });
+            heatmap.setMap(map);
+
+            //[Chris] Info window: https://developers.google.com/maps/documentation/javascript/infowindows
+            var contentString = 'This is a Info window';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            var marker = new google.maps.Marker({
+                position: {lat: 40.741, lng: -74.005},
+                map: map,
+                title: 'Chelsea '
+            });
+
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
+        }
+
+
+        </script>
+
+
+    </body>
+    </html>
