@@ -44,7 +44,7 @@
             </div>
 
             <div class="section">
-                <a class="waves-effect waves-light btn-large" id="action1">Action 1</a>
+                <a class="waves-effect waves-light btn-large" id="action1">Toggle Control</a>
             </div>
             <div class="divider"></div>
             <div class="section">
@@ -94,12 +94,19 @@
             });
             drawingManager.setMap(map);
 
-            google.maps.event.addDomListener(document.getElementById('action1'), 'click', hideDrawingManager);
+            google.maps.event.addDomListener(document.getElementById('action1'), 'click', toggleDrawingManager);
 
-            function hideDrawingManager() {
-                drawingManager.setOptions({
-                    drawingControl: false
-                });
+            function toggleDrawingManager() {
+                if (drawingManager.drawingControl == true) {
+                    drawingManager.setOptions({
+                        drawingControl: false
+                    });
+                } else {
+                    drawingManager.setOptions({
+                        drawingControl: true
+                    });
+                }
+
             }
 
             // [Chris] Plot visualization (heatmap) layer: https://developers.google.com/maps/documentation/javascript/heatmaplayer#load_the_visualization_library
