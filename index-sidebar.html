@@ -11,6 +11,15 @@
       #map {
         height: 100%;
       }
+      #wrapper { position: relative; height: 100%;}
+      #over_map {
+          position: absolute;
+          top: 10px;
+          bottom: 10px;
+          right: 10px;
+          z-index: 99;
+          background: rgba(255, 255, 255, 0.7);
+      }
       /* Optional: Makes the sample page fill the window. */
       html, body {
         height: 100%;
@@ -20,15 +29,36 @@
     </style>
   </head>
   <body>
+    <div id="wrapper">
+
     <div id="map"></div>
+    <div id="over_map" class="card-panel">
+        <div class="section">
+            <a class="waves-effect waves-light btn-large">Action 1</a>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <a class="waves-effect waves-light btn-large">Action 2</a>
+        </div>
+    </div>
+
+    <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgZ1yqO2TdcEd3ustOaP-rCBfmNBdAZlw&libraries=drawing,visualization&callback=initMap"
      async defer></script>
-    
+
     <script>
 
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 40.740914, lng: -74.0043697}, 
+          center: {lat: 40.740914, lng: -74.0043697},
           zoom: 15
         });
         // [Chris] Plot drawing layer: https://developers.google.com/maps/documentation/javascript/examples/drawing-tools
@@ -79,17 +109,15 @@
           map: map,
           title: 'Chelsea '
         });
-        
+
         marker.addListener('click', function() {
           infowindow.open(map, marker);
         });
       }
 
-     
+
       </script>
 
 
   </body>
 </html>
-
-
