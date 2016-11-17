@@ -1,0 +1,1 @@
+cat coordinates.txt | sed "s/^\(.*\),\(.*\)$/{lat: \1, lng: \2},/" > "cordinates_for_js.txt"
