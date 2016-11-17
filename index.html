@@ -5,6 +5,9 @@
     <title>Drawing tools</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
     <style>
     /* Always set the map height explicitly to define the size of the div
     * element that contains the map. */
@@ -18,8 +21,17 @@
         bottom: 10px;
         right: 10px;
         z-index: 99;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.8);
     }
+    /* label color */
+    .input-field label {
+        color: #000000;
+    }
+    /* label underline color */
+    .input-field input {
+        border-bottom: 1px solid #000;
+    }
+
     a {
         width: 100%
     }
@@ -53,9 +65,6 @@
 
         </div>
 
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-
         <!-- Compiled and minified JavaScript -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
@@ -70,8 +79,8 @@
 
 
 
-        </script>
+    </script>
 
 
-    </body>
-    </html>
+</body>
+</html>
