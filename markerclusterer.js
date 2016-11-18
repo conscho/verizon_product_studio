@@ -699,7 +699,7 @@ MarkerClusterer.prototype.repaint = function() {
     for (var i = 0, cluster; cluster = oldClusters[i]; i++) {
       cluster.remove();
     }
-  }, 0);
+}, 0);
 };
 
 

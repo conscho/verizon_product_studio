@@ -153,7 +153,8 @@ function initMap() {
     function createMarker(input) {
         var contentString = '<b>'+input.label+'</b><br>'+input.text;
         var marker = new google.maps.Marker({
-            position: {lat: input.lat, lng: input.lng}
+            position: {lat: input.lat, lng: input.lng},
+            map: map
         });
 
         infowindow = new google.maps.InfoWindow({});
@@ -172,16 +173,19 @@ function initMap() {
 
     function moveMarkers(markers, clustering) {
         for (var i = 0; i < markers.length; i++) {
-            moveMarkerBy(markers[i], 0, 0.00002);
+            if (true) {
+                Math.seedrandom(i);
+            }
+            moveMarkerBy(markers[i], 0, (Math.random()*2 - 1)*0.00005, (Math.random()*2 - 1)*0.00005);
         }
-        //var clusteringNew = update_clustering(markers);
-        clustering.clearMarkers();
-        //clustering = clusteringNew;
-        clustering.addMarkers(markers);
+        // Update clusters
+        if (clustering) {
+            clustering.repaint();
+        }
     }
 
     //[Chris] Marker clustering
-    function update_clustering(markers) {
+    function createClusters(markers) {
         var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'images/m'});
         return markerCluster;
     }
@@ -190,15 +194,14 @@ function initMap() {
     var markers = locations.map(createMarker);
 
     // Run individual features of map
-    var clustering = update_clustering(markers);
-    // show_heatmap()
-    // show_infowindow()
+    var clustering = createClusters(markers);
+    // var clustering = null;
 
 
     // Move all markers
-    for (var i=0;i<=100;i++) {
+    for (var i=0;i<=1000;i++) {
         (function(ind) {
-            setTimeout(function(){moveMarkers(markers, clustering);}, 500 * ind);
+            setTimeout(function(){moveMarkers(markers, clustering);}, 200 * ind);
         })(i);
     }
 
