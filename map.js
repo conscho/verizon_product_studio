@@ -147,7 +147,6 @@ function initMap() {
         drawingManager.setMap(null);
         center = circle.getCenter();
         radius = circle.getRadius();
-        evacuationActive = true;
     });
 
     google.maps.event.addDomListener(document.getElementById('btn-source'), 'click', drawSource);
@@ -182,6 +181,14 @@ function initMap() {
         } else {
             drawingManager.setMap(null);
         }
+    }
+
+    google.maps.event.addDomListener(document.getElementById('btn-start'), 'click', startEvacuation);
+    function startEvacuation() {
+        confirm("Start evacuation messaging?");
+        evacuationActive = true;
+        var d = document.getElementById("btn-start");
+        d.className += " disabled";
     }
 
     // Moving marker demo
