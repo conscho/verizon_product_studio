@@ -253,9 +253,9 @@ function initMap() {
                 moveMarkerBy(markers[i], deltaLng, deltaLat);
                 var instructions;
                 if (deltaLat>=0) { //N
-                    instructions  = (deltaLng>=0) ? '<b>Explosion on 23rd street and 6th avenue</b><br>Head north on Xth avenue': '<b>Explosion on 23rd street and 6th avenue</b><br>Head west on Xth street';
+                    instructions  = (deltaLng>=0) ? '<b>Explosion on 23rd street and 6th avenue</b><br>Evacuate the area and walk towards 27th street and 6th avenue': '<b>Explosion on 23rd street and 6th avenue</b><br>Head west on Xth street';
                 } else {
-                    instructions  = (deltaLng>=0) ? '<b>Explosion on 23rd street and 6th avenue</b><br>Head east on Xth street': '<b>Explosion on 23rd street and 6th avenue</b><br>Head south on Xth avenue';
+                    instructions  = (deltaLng>=0) ? '<b>Explosion on 23rd street and 6th avenue</b><br>Head east on Xth street': '<b>Explosion on 23rd street and 6th avenue</b><br>Evacuate the area and walk towards 14th street and 6th avenue';
                 }
                 //console.log(instructions)
                 markers[i].title = instructions;
@@ -1022,4 +1022,46 @@ var locations = [
     {lat: 40.75688, lng: -73.9888 , label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
     {lat: 40.774042, lng: -73.951378 , label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
     {lat: 40.806014, lng: -73.947258 , label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+    {lat: 40.74329, lng: -73.992641, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742412, lng: -73.992984, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742738, lng: -73.992641, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742868, lng: -73.993585, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742055, lng: -73.993714, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.741535, lng: -73.992705, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.741778, lng: -73.992083, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742006, lng: -73.991289, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742807, lng: -73.993156, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743274, lng: -73.992571, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743835, lng: -73.992646, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743811, lng: -73.993102, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743697, lng: -73.993451, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.7434, lng: -73.992652, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743368, lng: -73.992308, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743754, lng: -73.991928, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.74466, lng: -73.991375, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.744798, lng: -73.991042, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.745351, lng: -73.990999, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.745765, lng: -73.990624, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.746432, lng: -73.990104, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.746985, lng: -73.989605, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.744688, lng: -73.994894, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.744591, lng: -73.99601, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.744087, lng: -73.995667, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743746, lng: -73.996997, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743664, lng: -73.995967, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743713, lng: -73.994958, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.744152, lng: -73.994508, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743648, lng: -73.993349, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743095, lng: -73.991847, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742542, lng: -73.991804, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742022, lng: -73.991804, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.741811, lng: -73.992598, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.741795, lng: -73.993478, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.74212, lng: -73.994293, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742786, lng: -73.994637, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743453, lng: -73.993542, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743583, lng: -73.992898, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.743209, lng: -73.992984, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.742412, lng: -73.992856, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
+{lat: 40.74212, lng: -73.992147, label: 'Explosion on 23rd street and 6th avenue', text: 'Please avoid the area'},
 ]
