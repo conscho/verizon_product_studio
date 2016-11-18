@@ -187,8 +187,13 @@ function initMap() {
     function startEvacuation() {
         confirm("Start evacuation messaging?");
         evacuationActive = true;
+        // deactivate button
         var d = document.getElementById("btn-start");
         d.className += " disabled";
+
+        // show progress
+        var d = document.getElementById("progressbar");
+        d.className = "progress";
     }
 
     // Moving marker demo
