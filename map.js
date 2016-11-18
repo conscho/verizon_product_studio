@@ -149,22 +149,6 @@ function initMap() {
         radius = circle.getRadius();
     });
 
-    google.maps.event.addDomListener(document.getElementById('btn-source'), 'click', drawSource);
-    function drawSource() {
-        if (drawingManager.map == null) {
-            drawingManager.setMap(map);
-            drawingManager.setOptions({
-                circleOptions: {
-                    fillColor: '#ff2626',
-                    fillOpacity: 0.7,
-                    strokeWeight: 0,
-                    zIndex: 2
-                }
-            });
-        } else {
-            drawingManager.setMap(null);
-        }
-    }
 
     google.maps.event.addDomListener(document.getElementById('btn-evacuation'), 'click', drawEvacuation);
     function drawEvacuation() {
