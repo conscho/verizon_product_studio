@@ -154,7 +154,12 @@ function initMap() {
         var contentString = '<b>'+input.label+'</b><br>'+input.text;
         var marker = new google.maps.Marker({
             position: {lat: input.lat, lng: input.lng},
-            map: map
+            map: map,
+            direction: Math.random()*360,
+            speed: Math.random()*0.00005,
+            steps: 0,
+            maxSteps: Math.random()*50,
+            icon: 'images/marker.png'
         });
 
         infowindow = new google.maps.InfoWindow({});
@@ -193,10 +198,10 @@ function initMap() {
     // Initialize markers
     var markers = locations.map(createMarker);
 
-    // Run individual features of map
+    // Clustering on
     var clustering = createClusters(markers);
+    // Clustering off
     // var clustering = null;
-
 
     // Move all markers
     for (var i=0;i<=1000;i++) {
