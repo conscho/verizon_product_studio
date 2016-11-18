@@ -1,6 +1,14 @@
 function initMap() {
     var markers;
 
+    var evacuationActive = false;
+    var center = new google.maps.LatLng(0,0);
+    var radius = 0;
+
+    // Global speed of dots
+    var speed = 0.000005;
+    var framerate = 100;
+
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 40.740914, lng: -74.0043697},
         zoom: 15,
@@ -117,6 +125,9 @@ function initMap() {
 
     google.maps.event.addListener(drawingManager, 'circlecomplete', function( circle ) {
         drawingManager.setMap(null);
+        center = circle.getCenter();
+        radius = circle.getRadius();
+        evacuationActive = true;
     });
 
     google.maps.event.addDomListener(document.getElementById('btn-source'), 'click', drawSource);
@@ -155,10 +166,11 @@ function initMap() {
         var marker = new google.maps.Marker({
             position: {lat: input.lat, lng: input.lng},
             map: map,
-            direction: Math.random()*360,
-            speed: Math.random()*0.00005,
+            direction: Math.round(Math.random()*360),
+            stepSize: Math.random()*speed,
             steps: 0,
-            maxSteps: Math.random()*50,
+            changeDirectionAfter: Math.round(Math.random()* 100 + 50),
+            changeStepSizeAfter: Math.round(Math.random()* 300 + 100),
             icon: 'images/marker.png'
         });
 
@@ -172,16 +184,44 @@ function initMap() {
     }
 
     function moveMarkerBy(marker, deltaX = 0, deltaY = 0) {
-        latlng = new google.maps.LatLng(marker.getPosition().lat() + deltaX, marker.getPosition().lng() + deltaY);
+        latlng = new google.maps.LatLng(marker.getPosition().lat() + deltaY, marker.getPosition().lng() + deltaX);
         marker.setPosition(latlng);
     }
 
-    function moveMarkers(markers, clustering) {
+    // Distance between to points in defined units
+    function distance(lat1, lon1, lat2, lon2, unit) {
+        var radlat1 = Math.PI * lat1/180
+        var radlat2 = Math.PI * lat2/180
+        var theta = lon1-lon2
+        var radtheta = Math.PI * theta/180
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        dist = Math.acos(dist)
+        dist = dist * 180/Math.PI
+        dist = dist * 60 * 1.1515
+        if (unit=="K") { dist = dist * 1.609344 }
+        if (unit=="N") { dist = dist * 0.8684 }
+        if (unit=="M") { dist = dist * 1609.344 }
+        return dist
+    }
+
+    function moveMarkers(markers, clustering, step) {
         for (var i = 0; i < markers.length; i++) {
-            if (true) {
-                Math.seedrandom(i);
+            dist = distance(center.lat(), center.lng(), markers[i].getPosition().lat(), markers[i].getPosition().lng(), 'M')
+            if (evacuationActive && (dist < radius)) {
+                deltaX = Math.sign(markers[i].getPosition().lng() - center.lng()) * speed;
+                deltaY = Math.sign(markers[i].getPosition().lat() - center.lat()) * speed;
+                moveMarkerBy(markers[i], deltaX, deltaY);
+            } else {
+                // Threshhold after which to change direction and speed
+                if (step % markers[i].changeDirectionAfter == 0) {
+                    markers[i].direction = (markers[i].direction + (Math.random() * 2 - 1) * 20) % 360;
+                }
+                if (step % markers[i].changeStepSizeAfter == 0) {
+                    markers[i].stepSize = Math.random()*speed;
+                }
+                moveMarkerBy(markers[i], markers[i].stepSize * Math.sin(markers[i].direction), markers[i].stepSize * Math.sin(90 - markers[i].direction));
             }
-            moveMarkerBy(markers[i], 0, (Math.random()*2 - 1)*0.00005, (Math.random()*2 - 1)*0.00005);
+            markers[i].steps += 1;
         }
         // Update clusters
         if (clustering) {
@@ -204,9 +244,9 @@ function initMap() {
     // var clustering = null;
 
     // Move all markers
-    for (var i=0;i<=1000;i++) {
+    for (var i=0;i<=10000;i++) {
         (function(ind) {
-            setTimeout(function(){moveMarkers(markers, clustering);}, 200 * ind);
+            setTimeout(function(){moveMarkers(markers, clustering, ind);}, framerate * ind);
         })(i);
     }
 
