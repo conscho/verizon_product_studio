@@ -116,7 +116,6 @@ function initMap() {
         circleOptions: {
             fillColor: '#ffff00',
             fillOpacity: 0.3,
-            strokeWeight: 0.1,
             clickable: false,
             editable: false,
             zIndex: 1
@@ -136,8 +135,10 @@ function initMap() {
             drawingManager.setMap(map);
             drawingManager.setOptions({
                 circleOptions: {
-                    fillColor: '#ff0000',
-                    fillOpacity: 0.3,
+                    fillColor: '#ff2626',
+                    fillOpacity: 0.7,
+                    strokeWeight: 0,
+                    zIndex: 2
                 }
             });
         } else {
@@ -151,8 +152,10 @@ function initMap() {
             drawingManager.setMap(map);
             drawingManager.setOptions({
                 circleOptions: {
-                    fillColor: '#ffe600',
+                    fillColor: '#ff0000',
                     fillOpacity: 0.3,
+                    strokeWeight: 0,
+                    zIndex: 1
                 }
             });
         } else {
@@ -231,7 +234,26 @@ function initMap() {
 
     //[Chris] Marker clustering
     function createClusters(markers) {
-        var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'images/m'});
+        var clusterStyles = [
+            {
+                textColor: 'black',
+                url: 'images/m2.png',
+                height: 41,
+                width: 41
+            },
+            {
+                textColor: 'black',
+                url: 'images/m3.png',
+                height: 56,
+                width: 55
+            }
+        ];
+
+        var mcOptions = {
+            styles: clusterStyles
+        };
+
+        var markerCluster = new MarkerClusterer(map, markers, mcOptions);
         return markerCluster;
     }
 

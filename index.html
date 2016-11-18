@@ -22,6 +22,7 @@
         right: 10px;
         z-index: 99;
         background: rgba(255, 255, 255, 0.8);
+        min-width: 25%;
     }
     /* label color */
     .input-field label {
@@ -31,6 +32,7 @@
     .input-field input {
         border-bottom: 1px solid #000;
     }
+
 
     a {
         width: 100%
@@ -55,12 +57,18 @@
                 </div>
             </div>
 
-            <div class="section">
-                <a class="waves-effect waves-light btn-large" id="btn-source">Source</a>
+            <div class="section center-align">
+                <a class="waves-effect waves-light btn-large white black-text" style="width: 70%" id="btn-source">Source Area</a>
             </div>
             <div class="divider"></div>
-            <div class="section">
-                <a class="waves-effect waves-light btn-large" id="btn-evacuation">Evacuation</a>
+            <div class="section center-align">
+                <a class="waves-effect waves-light btn-large white black-text" style="width: 70%" id="btn-evacuation">Evacuation Area</a>
+            </div>
+            <div class="section" style="margin-top: 30%">
+                <a class="waves-effect waves-light btn-large red darken-3" id="btn-evacuation">Start Evacuation</a>
+            </div>
+            <div>
+                <img class="responsive-img" src="images/tempus-logo-black.png" style="position:absolute; bottom: 20px;">
             </div>
 
         </div>
@@ -77,7 +85,7 @@
         <script src="map.js"></script>
 
         <script src="markerclusterer.js"></script>
-        <script src="seedrandom.js"></script>        
+        <script src="seedrandom.js"></script>
 
 
 
