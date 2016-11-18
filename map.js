@@ -6,8 +6,8 @@ function initMap() {
     var radius = 0;
 
     // Global speed of dots
-    var speed = 0.000004;
-    var framerate = 150;
+    var speed = 0.000005;
+    var framerate = 100;
 
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 40.751809, lng: -73.958416},
@@ -165,7 +165,7 @@ function initMap() {
 
     // Moving marker demo
     function createMarker(input) {
-        var contentString = '<b>'+input.label+'</b><br>'+input.text;
+        //var contentString = '<b>'+input.label+'</b><br>'+input.text;
         var marker = new google.maps.Marker({
             position: {lat: input.lat, lng: input.lng},
             map: map,
@@ -174,20 +174,24 @@ function initMap() {
             steps: 0,
             changeDirectionAfter: Math.round(Math.random()* 100 + 50),
             changeStepSizeAfter: Math.round(Math.random()* 300 + 100),
-            icon: 'images/marker.png'
+            icon: 'images/marker.png',
+            title: '<b>'+input.label+'</b><br>'+input.text
         });
 
         infowindow = new google.maps.InfoWindow({});
 
         marker.addListener('click', function() {
-            infowindow.setContent(contentString);
+            infowindow.setContent(marker.title);
             infowindow.open(map, marker);
         });
         return marker;
     }
 
-    function moveMarkerBy(marker, deltaX = 0, deltaY = 0) {
-        latlng = new google.maps.LatLng(marker.getPosition().lat() + deltaY, marker.getPosition().lng() + deltaX);
+    function moveMarkerBy(marker, deltaLng = 0, deltaLat = 0) {
+        if (marker.getPosition().lng() < -74.01 || marker.getPosition().lng() > -73.97) {
+            marker.direction = (marker.direction + 180);
+        }
+        latlng = new google.maps.LatLng(marker.getPosition().lat() + deltaLat, marker.getPosition().lng() + deltaLng);
         marker.setPosition(latlng);
     }
 
@@ -211,9 +215,17 @@ function initMap() {
         for (var i = 0; i < markers.length; i++) {
             dist = distance(center.lat(), center.lng(), markers[i].getPosition().lat(), markers[i].getPosition().lng(), 'M')
             if (evacuationActive && (dist < radius)) {
-                deltaX = Math.sign(markers[i].getPosition().lng() - center.lng()) * speed;
-                deltaY = Math.sign(markers[i].getPosition().lat() - center.lat()) * speed;
-                moveMarkerBy(markers[i], deltaX, deltaY);
+                deltaLng = Math.sign(markers[i].getPosition().lng() - center.lng()) * speed;
+                deltaLat = Math.sign(markers[i].getPosition().lat() - center.lat()) * speed;
+                moveMarkerBy(markers[i], deltaLng, deltaLat);
+                var instructions;
+                if (deltaLat>=0) { //N
+                    instructions  = (deltaLat>=0) ? 'Head towards NE': 'Head towards NW';
+                } else {
+                    instructions  = (deltaLng>=0) ? 'Head towards SE': 'Head towards SW';
+                }
+                //console.log(instructions)
+                markers[i].title = instructions;
             } else {
                 // Threshhold after which to change direction and speed
                 if (step % markers[i].changeDirectionAfter == 0) {
@@ -532,7 +544,6 @@ var locations = [
 {lat: 40.735291, lng: -74.00116 , label: 'Test', text: 'This is a test'},
 {lat: 40.729958, lng: -74.004765 , label: 'Test', text: 'This is a test'},
 {lat: 40.721502, lng: -74.006824 , label: 'Test', text: 'This is a test'},
-{lat: 40.709141, lng: -74.011116 , label: 'Test', text: 'This is a test'},
 {lat: 40.70784, lng: -74.00528 , label: 'Test', text: 'This is a test'},
 {lat: 40.706279, lng: -74.008026 , label: 'Test', text: 'This is a test'},
 {lat: 40.713045, lng: -73.990345 , label: 'Test', text: 'This is a test'},
@@ -547,7 +558,6 @@ var locations = [
 {lat: 40.783141, lng: -73.952751 , label: 'Test', text: 'This is a test'},
 {lat: 40.781061, lng: -73.947773 , label: 'Test', text: 'This is a test'},
 {lat: 40.778592, lng: -73.954296 , label: 'Test', text: 'This is a test'},
-{lat: 40.765591, lng: -73.964767 , label: 'Test', text: 'This is a test'},
 {lat: 40.753369, lng: -73.983994 , label: 'Test', text: 'This is a test'},
 {lat: 40.738933, lng: -73.990345 , label: 'Test', text: 'This is a test'},
 {lat: 40.723844, lng: -73.992062 , label: 'Test', text: 'This is a test'},
@@ -578,11 +588,9 @@ var locations = [
 {lat: 40.73321, lng: -73.994637 , label: 'Test', text: 'This is a test'},
 {lat: 40.725145, lng: -73.98983 , label: 'Test', text: 'This is a test'},
 {lat: 40.747517, lng: -73.979874 , label: 'Test', text: 'This is a test'},
-{lat: 40.769882, lng: -73.962364 , label: 'Test', text: 'This is a test'},
 {lat: 40.798997, lng: -73.947258 , label: 'Test', text: 'This is a test'},
 {lat: 40.806533, lng: -73.946228 , label: 'Test', text: 'This is a test'},
 {lat: 40.803675, lng: -73.955154 , label: 'Test', text: 'This is a test'},
-{lat: 40.770402, lng: -73.964081 , label: 'Test', text: 'This is a test'},
 {lat: 40.754799, lng: -73.97953 , label: 'Test', text: 'This is a test'},
 {lat: 40.732169, lng: -73.99498 , label: 'Test', text: 'This is a test'},
 {lat: 40.714216, lng: -73.988113 , label: 'Test', text: 'This is a test'},
@@ -599,17 +607,11 @@ var locations = [
 {lat: 40.761821, lng: -73.991203 , label: 'Test', text: 'This is a test'},
 {lat: 40.771182, lng: -73.9785 , label: 'Test', text: 'This is a test'},
 {lat: 40.780541, lng: -73.977814 , label: 'Test', text: 'This is a test'},
-{lat: 40.78886, lng: -73.969917 , label: 'Test', text: 'This is a test'},
-{lat: 40.797177, lng: -73.962708 , label: 'Test', text: 'This is a test'},
 {lat: 40.7899, lng: -73.970947 , label: 'Test', text: 'This is a test'},
 {lat: 40.776382, lng: -73.978844 , label: 'Test', text: 'This is a test'},
 {lat: 40.774042, lng: -73.971634 , label: 'Test', text: 'This is a test'},
-{lat: 40.778982, lng: -73.966827 , label: 'Test', text: 'This is a test'},
-{lat: 40.783921, lng: -73.962021 , label: 'Test', text: 'This is a test'},
-{lat: 40.78873, lng: -73.960133 , label: 'Test', text: 'This is a test'},
 {lat: 40.792629, lng: -73.959103 , label: 'Test', text: 'This is a test'},
 {lat: 40.796138, lng: -73.956356 , label: 'Test', text: 'This is a test'},
-{lat: 40.779242, lng: -73.968716 , label: 'Test', text: 'This is a test'},
 {lat: 40.773002, lng: -73.972836 , label: 'Test', text: 'This is a test'},
 {lat: 40.769752, lng: -73.974724 , label: 'Test', text: 'This is a test'},
 {lat: 40.762991, lng: -73.978329 , label: 'Test', text: 'This is a test'},
@@ -656,8 +658,6 @@ var locations = [
 {lat: 40.769232, lng: -73.986568 , label: 'Test', text: 'This is a test'},
 {lat: 40.763641, lng: -73.991718 , label: 'Test', text: 'This is a test'},
 {lat: 40.761496, lng: -73.973436 , label: 'Test', text: 'This is a test'},
-{lat: 40.768647, lng: -73.966827 , label: 'Test', text: 'This is a test'},
-{lat: 40.776122, lng: -73.961077 , label: 'Test', text: 'This is a test'},
 {lat: 40.783596, lng: -73.955326 , label: 'Test', text: 'This is a test'},
 {lat: 40.791069, lng: -73.949575 , label: 'Test', text: 'This is a test'},
 {lat: 40.749403, lng: -73.986225 , label: 'Test', text: 'This is a test'},
@@ -766,7 +766,6 @@ var locations = [
 {lat: 40.735291, lng: -74.00116 , label: 'Test', text: 'This is a test'},
 {lat: 40.729958, lng: -74.004765 , label: 'Test', text: 'This is a test'},
 {lat: 40.721502, lng: -74.006824 , label: 'Test', text: 'This is a test'},
-{lat: 40.709141, lng: -74.011116 , label: 'Test', text: 'This is a test'},
 {lat: 40.70784, lng: -74.00528 , label: 'Test', text: 'This is a test'},
 {lat: 40.706279, lng: -74.008026 , label: 'Test', text: 'This is a test'},
 {lat: 40.713045, lng: -73.990345 , label: 'Test', text: 'This is a test'},
@@ -781,7 +780,6 @@ var locations = [
 {lat: 40.783141, lng: -73.952751 , label: 'Test', text: 'This is a test'},
 {lat: 40.781061, lng: -73.947773 , label: 'Test', text: 'This is a test'},
 {lat: 40.778592, lng: -73.954296 , label: 'Test', text: 'This is a test'},
-{lat: 40.765591, lng: -73.964767 , label: 'Test', text: 'This is a test'},
 {lat: 40.753369, lng: -73.983994 , label: 'Test', text: 'This is a test'},
 {lat: 40.738933, lng: -73.990345 , label: 'Test', text: 'This is a test'},
 {lat: 40.723844, lng: -73.992062 , label: 'Test', text: 'This is a test'},
@@ -812,11 +810,9 @@ var locations = [
 {lat: 40.73321, lng: -73.994637 , label: 'Test', text: 'This is a test'},
 {lat: 40.725145, lng: -73.98983 , label: 'Test', text: 'This is a test'},
 {lat: 40.747517, lng: -73.979874 , label: 'Test', text: 'This is a test'},
-{lat: 40.769882, lng: -73.962364 , label: 'Test', text: 'This is a test'},
 {lat: 40.798997, lng: -73.947258 , label: 'Test', text: 'This is a test'},
 {lat: 40.806533, lng: -73.946228 , label: 'Test', text: 'This is a test'},
 {lat: 40.803675, lng: -73.955154 , label: 'Test', text: 'This is a test'},
-{lat: 40.770402, lng: -73.964081 , label: 'Test', text: 'This is a test'},
 {lat: 40.754799, lng: -73.97953 , label: 'Test', text: 'This is a test'},
 {lat: 40.732169, lng: -73.99498 , label: 'Test', text: 'This is a test'},
 {lat: 40.714216, lng: -73.988113 , label: 'Test', text: 'This is a test'},
@@ -833,17 +829,11 @@ var locations = [
 {lat: 40.761821, lng: -73.991203 , label: 'Test', text: 'This is a test'},
 {lat: 40.771182, lng: -73.9785 , label: 'Test', text: 'This is a test'},
 {lat: 40.780541, lng: -73.977814 , label: 'Test', text: 'This is a test'},
-{lat: 40.78886, lng: -73.969917 , label: 'Test', text: 'This is a test'},
-{lat: 40.797177, lng: -73.962708 , label: 'Test', text: 'This is a test'},
 {lat: 40.7899, lng: -73.970947 , label: 'Test', text: 'This is a test'},
 {lat: 40.776382, lng: -73.978844 , label: 'Test', text: 'This is a test'},
 {lat: 40.774042, lng: -73.971634 , label: 'Test', text: 'This is a test'},
-{lat: 40.778982, lng: -73.966827 , label: 'Test', text: 'This is a test'},
-{lat: 40.783921, lng: -73.962021 , label: 'Test', text: 'This is a test'},
-{lat: 40.78873, lng: -73.960133 , label: 'Test', text: 'This is a test'},
 {lat: 40.792629, lng: -73.959103 , label: 'Test', text: 'This is a test'},
 {lat: 40.796138, lng: -73.956356 , label: 'Test', text: 'This is a test'},
-{lat: 40.779242, lng: -73.968716 , label: 'Test', text: 'This is a test'},
 {lat: 40.773002, lng: -73.972836 , label: 'Test', text: 'This is a test'},
 {lat: 40.769752, lng: -73.974724 , label: 'Test', text: 'This is a test'},
 {lat: 40.762991, lng: -73.978329 , label: 'Test', text: 'This is a test'},
@@ -890,11 +880,8 @@ var locations = [
 {lat: 40.769232, lng: -73.986568 , label: 'Test', text: 'This is a test'},
 {lat: 40.763641, lng: -73.991718 , label: 'Test', text: 'This is a test'},
 {lat: 40.761496, lng: -73.973436 , label: 'Test', text: 'This is a test'},
-{lat: 40.768647, lng: -73.966827 , label: 'Test', text: 'This is a test'},
-{lat: 40.776122, lng: -73.961077 , label: 'Test', text: 'This is a test'},
 {lat: 40.783596, lng: -73.955326 , label: 'Test', text: 'This is a test'},
 {lat: 40.791069, lng: -73.949575 , label: 'Test', text: 'This is a test'},
-{lat: 40.777227, lng: -73.969574 , label: 'Test', text: 'This is a test'},
 {lat: 40.761171, lng: -73.980904 , label: 'Test', text: 'This is a test'},
 {lat: 40.754669, lng: -73.985796 , label: 'Test', text: 'This is a test'},
 {lat: 40.747972, lng: -73.991289 , label: 'Test', text: 'This is a test'},
@@ -915,10 +902,8 @@ var locations = [
 {lat: 40.761821, lng: -73.980818 , label: 'Test', text: 'This is a test'},
 {lat: 40.765136, lng: -73.979959 , label: 'Test', text: 'This is a test'},
 {lat: 40.767217, lng: -73.97953 , label: 'Test', text: 'This is a test'},
-{lat: 40.775342, lng: -73.968801 , label: 'Test', text: 'This is a test'},
 {lat: 40.7873, lng: -73.934212 , label: 'Test', text: 'This is a test'},
 {lat: 40.787105, lng: -73.959017 , label: 'Test', text: 'This is a test'},
-{lat: 40.792954, lng: -73.964252 , label: 'Test', text: 'This is a test'},
 {lat: 40.804324, lng: -73.946829 , label: 'Test', text: 'This is a test'},
 {lat: 40.814199, lng: -73.940649 , label: 'Test', text: 'This is a test'},
 {lat: 40.823812, lng: -73.94125 , label: 'Test', text: 'This is a test'},
@@ -933,11 +918,9 @@ var locations = [
 {lat: 40.785026, lng: -73.9464 , label: 'Test', text: 'This is a test'},
 {lat: 40.775212, lng: -73.948288 , label: 'Test', text: 'This is a test'},
 {lat: 40.765396, lng: -73.951206 , label: 'Test', text: 'This is a test'},
-{lat: 40.756945, lng: -73.966999 , label: 'Test', text: 'This is a test'},
 {lat: 40.748492, lng: -73.98571 , label: 'Test', text: 'This is a test'},
 {lat: 40.756165, lng: -73.994379 , label: 'Test', text: 'This is a test'},
 {lat: 40.748037, lng: -74.00485 , label: 'Test', text: 'This is a test'},
-{lat: 40.747712, lng: -74.019442 , label: 'Test', text: 'This is a test'},
 {lat: 40.740429, lng: -73.985968 , label: 'Test', text: 'This is a test'},
 {lat: 40.727942, lng: -73.992748 , label: 'Test', text: 'This is a test'},
 {lat: 40.713565, lng: -73.996439 , label: 'Test', text: 'This is a test'},
@@ -964,7 +947,6 @@ var locations = [
 {lat: 40.713403, lng: -73.990517 , label: 'Test', text: 'This is a test'},
 {lat: 40.712232, lng: -73.999701 , label: 'Test', text: 'This is a test'},
 {lat: 40.712232, lng: -74.007039 , label: 'Test', text: 'This is a test'},
-{lat: 40.714021, lng: -74.010386 , label: 'Test', text: 'This is a test'},
 {lat: 40.717176, lng: -74.005365 , label: 'Test', text: 'This is a test'},
 {lat: 40.722022, lng: -74.004078 , label: 'Test', text: 'This is a test'},
 {lat: 40.726868, lng: -74.00279 , label: 'Test', text: 'This is a test'},
@@ -981,21 +963,15 @@ var locations = [
 {lat: 40.753865, lng: -73.979788 , label: 'Test', text: 'This is a test'},
 {lat: 40.763641, lng: -73.973694 , label: 'Test', text: 'This is a test'},
 {lat: 40.774562, lng: -73.970947 , label: 'Test', text: 'This is a test'},
-{lat: 40.78652, lng: -73.967514 , label: 'Test', text: 'This is a test'},
 {lat: 40.795618, lng: -73.956184 , label: 'Test', text: 'This is a test'},
 {lat: 40.803675, lng: -73.944855 , label: 'Test', text: 'This is a test'},
 {lat: 40.792759, lng: -73.950005 , label: 'Test', text: 'This is a test'},
-{lat: 40.778202, lng: -73.966484 , label: 'Test', text: 'This is a test'},
 {lat: 40.764161, lng: -73.970261 , label: 'Test', text: 'This is a test'},
 {lat: 40.752459, lng: -73.987083 , label: 'Test', text: 'This is a test'},
-{lat: 40.762081, lng: -73.969231 , label: 'Test', text: 'This is a test'},
-{lat: 40.773262, lng: -73.960991 , label: 'Test', text: 'This is a test'},
 {lat: 40.775862, lng: -73.953094 , label: 'Test', text: 'This is a test'},
 {lat: 40.780541, lng: -73.950348 , label: 'Test', text: 'This is a test'},
 {lat: 40.785741, lng: -73.947601 , label: 'Test', text: 'This is a test'},
 {lat: 40.790939, lng: -73.952065 , label: 'Test', text: 'This is a test'},
-{lat: 40.796138, lng: -73.962364 , label: 'Test', text: 'This is a test'},
-{lat: 40.79016, lng: -73.966141 , label: 'Test', text: 'This is a test'},
 {lat: 40.783921, lng: -73.973007 , label: 'Test', text: 'This is a test'},
 {lat: 40.776902, lng: -73.979874 , label: 'Test', text: 'This is a test'},
 {lat: 40.767802, lng: -73.971977 , label: 'Test', text: 'This is a test'},
