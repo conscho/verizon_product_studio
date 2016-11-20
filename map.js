@@ -6,7 +6,7 @@ function initMap() {
     var radius = 0;
 
     // Global speed of dots
-    var speed = 0.000005;
+    var speed = 0.000003;
     var framerate = 100;
 
     var map = new google.maps.Map(document.getElementById('map'), {
